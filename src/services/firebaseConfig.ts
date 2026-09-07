@@ -1,4 +1,5 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
+import { getAnalytics, isSupported } from 'firebase/analytics';
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -21,13 +22,14 @@ import { UserProfile } from '../types';
 
 // Check for client configuration via environment or window
 const metaEnv = (import.meta as any).env || {};
-const firebaseConfig = {
-  apiKey: metaEnv.VITE_FIREBASE_API_KEY || '',
-  authDomain: metaEnv.VITE_FIREBASE_AUTH_DOMAIN || '',
-  projectId: metaEnv.VITE_FIREBASE_PROJECT_ID || '',
-  storageBucket: metaEnv.VITE_FIREBASE_STORAGE_BUCKET || '',
-  messagingSenderId: metaEnv.VITE_FIREBASE_MESSAGING_SENDER_ID || '',
-  appId: metaEnv.VITE_FIREBASE_APP_ID || '',
+export const firebaseConfig = {
+  apiKey: metaEnv.VITE_FIREBASE_API_KEY || 'AIzaSyCV-DCQG8f6mO1OUErPLO2eSTkhi41sglQ',
+  authDomain: metaEnv.VITE_FIREBASE_AUTH_DOMAIN || 'lingol-83655.firebaseapp.com',
+  projectId: metaEnv.VITE_FIREBASE_PROJECT_ID || 'lingol-83655',
+  storageBucket: metaEnv.VITE_FIREBASE_STORAGE_BUCKET || 'lingol-83655.firebasestorage.app',
+  messagingSenderId: metaEnv.VITE_FIREBASE_MESSAGING_SENDER_ID || '932024246550',
+  appId: metaEnv.VITE_FIREBASE_APP_ID || '1:932024246550:web:aca59613f81b1298adf037',
+  measurementId: metaEnv.VITE_FIREBASE_MEASUREMENT_ID || 'G-3YVL76ECGY',
 };
 
 const isFirebaseConfigured = Boolean(
@@ -37,13 +39,27 @@ const isFirebaseConfigured = Boolean(
 let app: any = null;
 let auth: any = null;
 let db: any = null;
+let analytics: any = null;
 
 if (isFirebaseConfigured) {
   try {
     app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
     auth = getAuth(app);
     db = getFirestore(app);
-    console.log('Firebase initialized with configuration.');
+    console.log('Firebase initialized with project:', firebaseConfig.projectId);
+
+    if (typeof window !== 'undefined') {
+      isSupported()
+        .then((supported) => {
+          if (supported && app) {
+            analytics = getAnalytics(app);
+            console.log('Firebase Analytics initialized.');
+          }
+        })
+        .catch((err) => {
+          console.debug('Firebase Analytics initialization skipped:', err);
+        });
+    }
   } catch (err) {
     console.warn('Firebase init error, using local fallback storage:', err);
   }
@@ -51,7 +67,7 @@ if (isFirebaseConfigured) {
   console.info('Firebase not configured. Using local persistence mode.');
 }
 
-export { auth, db, isFirebaseConfigured };
+export { app, auth, db, analytics, isFirebaseConfigured };
 
 // Fallback Local Storage User Key
 const LOCAL_USER_KEY = 'lingol_active_user';
@@ -236,6 +252,13 @@ export const authService = {
     if (typeof window !== 'undefined') {
       localStorage.removeItem(LOCAL_USER_KEY);
     }
+  },
+
+  onAuthStateChanged(callback: (user: FirebaseUser | null) => void) {
+    if (isFirebaseConfigured && auth) {
+      return onAuthStateChanged(auth, callback);
+    }
+    return () => {};
   },
 
   async syncFirestoreUser(firebaseUser: FirebaseUser): Promise<UserProfile> {

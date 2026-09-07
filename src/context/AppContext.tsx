@@ -159,6 +159,21 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   }, [user.interfaceLanguage]);
 
+  // Listen to Firebase Auth state changes
+  useEffect(() => {
+    const unsubscribe = authService.onAuthStateChanged(async (firebaseUser) => {
+      if (firebaseUser) {
+        try {
+          const synced = await authService.syncFirestoreUser(firebaseUser);
+          setUser(synced);
+        } catch (e) {
+          console.warn('Auth state change sync error:', e);
+        }
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
   const toggleDarkMode = () => setIsDarkMode((prev) => !prev);
 
   const showNotification = (msg: string) => {
