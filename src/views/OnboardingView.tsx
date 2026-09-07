@@ -237,7 +237,9 @@ export const OnboardingView: React.FC = () => {
                 <span>Test de niveau initial obligatoire (CECR A1 – C2)</span>
               </div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100">
-                {user.name ? `Bienvenue, ${user.name} !` : 'Bienvenue sur LinGoL'}
+                {user.name && user.name !== 'Apprenant Google' && user.name !== 'Google Learner'
+                  ? `Bienvenue, ${user.name} !`
+                  : 'Bienvenue, LinGoL Learner !'}
               </h2>
               <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-lg mx-auto leading-relaxed">
                 Après votre inscription ou authentification Google, le test de niveau est obligatoire pour calibrer votre avatar IA, vos leçons et vos objectifs personnalisés.

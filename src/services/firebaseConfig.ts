@@ -167,6 +167,9 @@ export const authService = {
         }
 
         if (parsed && typeof parsed === 'object' && parsed.uid) {
+          if (parsed.name === 'Google Learner' || parsed.name === 'Apprenant Google') {
+            parsed.name = 'LinGoL Learner';
+          }
           if (parsed.isAuthenticated === undefined) {
             parsed.isAuthenticated = Boolean(parsed.uid && parsed.uid !== '');
           }
@@ -311,7 +314,7 @@ export const authService = {
 
   async syncFirestoreUser(firebaseUser: FirebaseUser, learningLanguage?: string): Promise<UserProfile> {
     const existing = this.getCurrentUserProfile();
-    const realDisplayName = firebaseUser.displayName || existing.name || (firebaseUser.email ? firebaseUser.email.split('@')[0] : 'Apprenant Google');
+    const realDisplayName = firebaseUser.displayName || existing.name || (firebaseUser.email ? firebaseUser.email.split('@')[0] : 'LinGoL Learner');
     const realPhoto = firebaseUser.photoURL || existing.photoURL || undefined;
 
     const baseProfile: UserProfile = {
