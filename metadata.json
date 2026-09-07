@@ -1,0 +1,6 @@
+{
+  "name": "LinGoL — AI Language Learning Platform",
+  "description": "Personal AI language partner and conversation coach with interactive AI avatars, real-time voice speech, pronunciation analysis, and CEFR-tailored learning paths.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
