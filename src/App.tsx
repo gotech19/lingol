@@ -5,6 +5,7 @@ import { MobileNav } from './components/MobileNav';
 import { UpgradeModal } from './components/UpgradeModal';
 import { AuthModal } from './components/AuthModal';
 import { MicPermissionModal } from './components/MicPermissionModal';
+import { InstallPwaNotification } from './components/InstallPwaNotification';
 
 // Views
 import { LandingView } from './views/LandingView';
@@ -65,6 +66,9 @@ const MainContent: React.FC = () => {
           <span>{notification}</span>
         </div>
       )}
+
+      {/* Install PWA Notification */}
+      <InstallPwaNotification />
 
       {/* Global Modals */}
       <UpgradeModal
