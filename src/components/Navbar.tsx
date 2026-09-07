@@ -56,8 +56,11 @@ export const Navbar: React.FC = () => {
         <div className="flex items-center gap-8">
           <button
             onClick={() => setActiveView('dashboard')}
-            className="flex items-center gap-2 text-left focus:outline-none group cursor-pointer"
+            className="flex items-center gap-2.5 text-left focus:outline-none group cursor-pointer"
           >
+            <div className="w-8 h-8 rounded-xl overflow-hidden shadow-sm flex items-center justify-center group-hover:scale-105 transition-transform shrink-0">
+              <img src="/favicon.svg" alt="LinGoL Logo" className="w-full h-full object-cover" />
+            </div>
             <span className="text-2xl font-black tracking-tighter text-indigo-600 dark:text-indigo-400">
               LinGoL
             </span>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="lingolGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366F1" />
+      <stop offset="50%" stop-color="#4F46E5" />
+      <stop offset="100%" stop-color="#2563EB" />
+    </linearGradient>
+    <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="100%" stop-color="#A5B4FC" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#1E1B4B" flood-opacity="0.3" />
+    </filter>
+  </defs>
+
+  <!-- Background rounded squircle icon badge -->
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#lingolGrad)" filter="url(#shadow)" />
+
+  <!-- Speech bubble container -->
+  <path d="M16 18 C16 14.686 18.686 12 22 12 L42 12 C45.314 12 48 14.686 48 18 L48 34 C48 37.314 45.314 40 42 40 L28 40 L19 47 L20.5 40 L22 40 C18.686 40 16 37.314 16 34 Z" fill="#FFFFFF" fill-opacity="0.96" />
+
+  <!-- Audio speech sound waves inside bubble (representing real-time voice & pronunciation AI) -->
+  <rect x="23" y="23" width="3.5" height="8" rx="1.75" fill="#4F46E5" />
+  <rect x="29" y="19" width="3.5" height="16" rx="1.75" fill="#2563EB" />
+  <rect x="35" y="21" width="3.5" height="12" rx="1.75" fill="#0284C7" />
+  <rect x="41" y="24" width="3.5" height="6" rx="1.75" fill="#0EA5E9" />
+
+  <!-- Accent dot / spark for AI intelligence -->
+  <circle cx="48" cy="14" r="3" fill="#38BDF8" />
+</svg>

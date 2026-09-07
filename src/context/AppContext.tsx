@@ -161,6 +161,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Listen to Firebase Auth state changes
   useEffect(() => {
+    // Check if returning from a redirect auth flow
+    authService.checkRedirectResult().then((synced) => {
+      if (synced) {
+        setUser(synced);
+      }
+    });
+
     const unsubscribe = authService.onAuthStateChanged(async (firebaseUser) => {
       if (firebaseUser) {
         try {
