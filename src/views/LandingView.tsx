@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useApp } from '../context/AppContext';
 import { getTranslation } from '../translations';
 import { AVATARS_CATALOG } from '../data/avatars';
@@ -23,6 +23,12 @@ import {
   Copy,
   Check,
   ExternalLink,
+  ChevronLeft,
+  ChevronRight,
+  Zap,
+  BookOpen,
+  Headphones,
+  CheckCircle2,
 } from 'lucide-react';
 
 export const LandingView: React.FC = () => {
@@ -33,6 +39,22 @@ export const LandingView: React.FC = () => {
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [googleAuthError, setGoogleAuthError] = useState<string | null>(null);
   const [copiedHostname, setCopiedHostname] = useState(false);
+  const avatarCarouselRef = useRef<HTMLDivElement>(null);
+
+  const scrollAvatars = (direction: 'left' | 'right') => {
+    if (avatarCarouselRef.current) {
+      const scrollAmount = 320;
+      avatarCarouselRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  const handleStartFreeTrialTest = () => {
+    updateUser({ learningLanguage: selectedLang });
+    setActiveView('onboarding');
+  };
 
   const currentHostname = typeof window !== 'undefined' ? window.location.hostname : '';
 
@@ -73,21 +95,21 @@ export const LandingView: React.FC = () => {
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-gradient-to-tr from-indigo-500/20 via-blue-500/20 to-cyan-400/20 blur-3xl -z-10 pointer-events-none rounded-full" />
 
         <div className="text-center max-w-3xl mx-auto space-y-6">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800/80 text-indigo-700 dark:text-indigo-300 text-xs font-semibold shadow-sm">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 dark:bg-indigo-500/20 border border-indigo-500/20 text-indigo-700 dark:text-indigo-300 text-xs font-semibold shadow-sm">
             <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
-            <span>Next-Generation AI Language Learning</span>
+            <span>Bienvenue sur LinGoL Learner — Apprentissage Vocal Par l'IA</span>
           </div>
 
           <h1 className="text-4xl sm:text-6xl font-extrabold text-slate-900 dark:text-slate-50 tracking-tight leading-[1.15]">
-            Learn a language by{' '}
-            <span className="bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-500 bg-clip-text text-transparent">
-              talking with your own AI character
+            Maîtrisez une langue en{' '}
+            <span className="bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-400 bg-clip-text text-transparent">
+              échangeant avec votre tuteur IA
             </span>
             .
           </h1>
 
           <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-300 font-normal max-w-2xl mx-auto leading-relaxed">
-            {t.heroSubtitle}
+            Échangez avec des personnages intelligents, entraînez votre prononciation acoustique et évaluez votre niveau CECR dès le démarrage grâce au moteur IA Gemini.
           </p>
 
           {/* MANDATORY REGISTRATION & STARTUP LEVEL TEST CARD */}
@@ -216,32 +238,43 @@ export const LandingView: React.FC = () => {
                     </div>
                   )}
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-col sm:flex-row items-center gap-2">
+                    <button
+                      onClick={handleStartFreeTrialTest}
+                      className="w-full sm:flex-1 py-3 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
+                      title="Faites un test de niveau immédiat sans inscription"
+                    >
+                      <Play className="w-3.5 h-3.5 fill-current" />
+                      <span>Faire un essai gratuit (Test immédiat)</span>
+                    </button>
                     <button
                       onClick={() => {
                         updateUser({ learningLanguage: selectedLang });
                         setIsAuthModalOpen(true);
                       }}
-                      className="flex-1 py-3 px-4 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-lg shadow-indigo-500/25 flex items-center justify-center gap-2 transition-all cursor-pointer"
+                      className="w-full sm:flex-1 py-3 px-4 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-lg shadow-indigo-500/25 flex items-center justify-center gap-2 transition-all cursor-pointer"
                     >
                       <Sparkles className="w-3.5 h-3.5" />
-                      <span>Inscription par E-mail & Test</span>
+                      <span>Inscription & Test</span>
                     </button>
                     <button
                       onClick={() => setIsAuthModalOpen(true)}
-                      className="py-3 px-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-xs cursor-pointer"
+                      className="w-full sm:w-auto py-3 px-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-xs cursor-pointer"
                     >
                       Se connecter
                     </button>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between text-[11px] text-slate-500 pt-1">
+                <div className="flex flex-wrap items-center justify-between text-[11px] text-slate-500 pt-1 gap-2">
                   <span className="flex items-center gap-1">
-                    <CheckCircle className="w-3.5 h-3.5 text-emerald-500" /> Évaluation Orale & Vocale
+                    <CheckCircle className="w-3.5 h-3.5 text-emerald-500" /> Évaluation Orale & Vocale CECR
                   </span>
                   <span className="flex items-center gap-1">
-                    <CheckCircle className="w-3.5 h-3.5 text-emerald-500" /> Sans carte bancaire
+                    <CheckCircle className="w-3.5 h-3.5 text-emerald-500" /> Essai visiteur libre sans CB
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Zap className="w-3.5 h-3.5 text-amber-500" /> Moteur IA Gemini intégré
                   </span>
                 </div>
               </div>
@@ -349,6 +382,99 @@ export const LandingView: React.FC = () => {
         </div>
       </section>
 
+      {/* BUT DE LA PLATEFORME, OUTILS & AVANTAGES */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-3xl mx-auto mb-10">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-xs font-bold border border-indigo-500/20 mb-3">
+            <Sparkles className="w-3.5 h-3.5" /> But & Écosystème LinGoL
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+            Pourquoi LinGoL Learner transforme votre apprentissage
+          </h2>
+          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
+            Le but de cette plateforme est de briser le blocage de l'oral en offrant une immersion conversationnelle quotidienne avec des tuteurs d'IA intelligents, une correction phonétique en temps réel et un suivi rigoureux de votre niveau CECR.
+          </p>
+        </div>
+
+        {/* 3 Colonnes : But, Outils, Avantages */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Card 1: Le But */}
+          <div className="p-7 rounded-3xl bg-white dark:bg-[#121827] border border-slate-200 dark:border-slate-800/80 shadow-xs space-y-4">
+            <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold">
+              <Target className="w-6 h-6" />
+            </div>
+            <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">Le But de la Plateforme</h3>
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+              En finir avec les exercices de grammaire passifs. LinGoL Learner vous met immédiatement en situation d'échange réel pour développer des automatismes oraux, vaincre la peur de parler et atteindre une aisance naturelle.
+            </p>
+            <ul className="space-y-2 pt-2 text-xs text-slate-600 dark:text-slate-300">
+              <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                <span>Prise de parole sans jugement ni stress</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                <span>Progression continue du niveau A1 au C2</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                <span>Immersion quotidienne de 10 à 15 minutes</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Card 2: Les Outils */}
+          <div className="p-7 rounded-3xl bg-white dark:bg-[#121827] border border-slate-200 dark:border-slate-800/80 shadow-xs space-y-4">
+            <div className="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
+              <Brain className="w-6 h-6" />
+            </div>
+            <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">Les Outils Intégrés</h3>
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+              Une suite d'outils interactifs conçus pour chaque aspect de la maîtrise linguistique, alimentés par une IA de pointe et la reconnaissance vocale de haute précision.
+            </p>
+            <ul className="space-y-2 pt-2 text-xs text-slate-600 dark:text-slate-300">
+              <li className="flex items-center gap-2">
+                <Mic className="w-4 h-4 text-indigo-500 dark:text-indigo-400 shrink-0" />
+                <span><strong>Coach de prononciation</strong> avec feedback acoustique</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <Volume2 className="w-4 h-4 text-indigo-500 dark:text-indigo-400 shrink-0" />
+                <span><strong>Dialogue vocal immersif</strong> avec des avatars spécialisés</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <BookOpen className="w-4 h-4 text-indigo-500 dark:text-indigo-400 shrink-0" />
+                <span><strong>Simulations de situations réelles</strong> (voyage, travail, café)</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Card 3: Les Avantages & IA Gemini */}
+          <div className="p-7 rounded-3xl bg-white dark:bg-[#121827] border border-slate-200 dark:border-slate-800/80 shadow-xs space-y-4">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
+              <Zap className="w-6 h-6" />
+            </div>
+            <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">Les Avantages & Gemini</h3>
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+              Profitez de la puissance de l'API Gemini pour générer des conversations intelligentes et fluides sans frais avec la clé d'API gratuite de Google AI Studio.
+            </p>
+            <ul className="space-y-2 pt-2 text-xs text-slate-600 dark:text-slate-300">
+              <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                <span><strong>Clé API Gemini gratuite</strong> : quota gratuit disponible sur Google AI Studio</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                <span><strong>Disponible hors-ligne & PWA</strong> sur mobile et tablette</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                <span><strong>Test immédiat</strong> sans obligation d'enregistrement préalable</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
       {/* HOW IT WORKS SECTION */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-12">
@@ -406,37 +532,59 @@ export const LandingView: React.FC = () => {
         </div>
       </section>
 
-      {/* MEET YOUR AI PARTNERS CAROUSEL / GRID */}
+      {/* MEET YOUR AI PARTNERS CAROUSEL / DÉFILEMENT */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-8 gap-4">
           <div>
-            <h2 className="text-xs font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
-              Personalized Companion
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-xs font-bold border border-indigo-500/20 mb-2">
+              <Sparkles className="w-3.5 h-3.5" /> Compagnons d'apprentissage
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 mt-1">
+              Faites défiler et choisissez votre tuteur IA
             </h2>
-            <p className="text-3xl font-extrabold text-slate-900 dark:text-slate-100 mt-1">
-              Meet Your AI Characters
-            </p>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-              Each character has a unique voice, teaching style, and conversation specialty.
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+              Glissez ou cliquez sur les flèches pour faire défiler tous les avatars. Chaque personnage possède une voix unique, une personnalité et un accent ciblé.
             </p>
           </div>
 
-          <button
-            onClick={() => setActiveView('my-character')}
-            className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1"
-          >
-            <span>View All Characters</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
+          {/* Carousel Controls */}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => scrollAvatars('left')}
+              className="p-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-colors shadow-sm cursor-pointer"
+              aria-label="Faire défiler vers la gauche"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => scrollAvatars('right')}
+              className="p-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-colors shadow-sm cursor-pointer"
+              aria-label="Faire défiler vers la droite"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => setActiveView('my-character')}
+              className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1 ml-2"
+            >
+              <span>Tous les profils</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {AVATARS_CATALOG.slice(0, 4).map((av) => (
+        {/* Horizontal scrollable carousel */}
+        <div
+          ref={avatarCarouselRef}
+          className="flex gap-5 overflow-x-auto pb-6 pt-1 scroll-smooth snap-x snap-mandatory scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent focus:outline-none"
+          style={{ scrollbarWidth: 'thin' }}
+        >
+          {AVATARS_CATALOG.map((av) => (
             <div
               key={av.id}
-              className="group rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
+              className="w-72 sm:w-80 shrink-0 snap-start group rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
             >
-              <div className="relative h-48 overflow-hidden">
+              <div className="relative h-48 overflow-hidden bg-slate-800">
                 <img
                   src={av.avatarUrl}
                   alt={av.name}
@@ -452,23 +600,53 @@ export const LandingView: React.FC = () => {
 
               <div className="p-5 flex-1 flex flex-col justify-between">
                 <div>
-                  <h4 className="text-lg font-bold text-slate-900 dark:text-slate-100">{av.name}</h4>
-                  <p className="text-xs font-medium text-indigo-600 dark:text-indigo-400">{av.title}</p>
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-lg font-bold text-slate-900 dark:text-slate-100">{av.name}</h4>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 font-semibold">
+                      {av.nativeLanguages?.map((l) => l.toUpperCase()).join(' · ') || 'MULTI'}
+                    </span>
+                  </div>
+                  <p className="text-xs font-medium text-indigo-600 dark:text-indigo-400 mt-0.5">{av.title}</p>
                   <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 line-clamp-3">
                     {av.bio}
                   </p>
                 </div>
 
-                <button
-                  onClick={() => {
-                    setSelectedAvatar(av.id);
-                    setActiveView('conversation');
-                  }}
-                  className="mt-4 w-full py-2 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-600 text-slate-800 dark:text-slate-200 text-xs font-bold transition-colors flex items-center justify-center gap-1.5"
-                >
-                  <Mic className="w-3.5 h-3.5" />
-                  <span>Talk with {av.name}</span>
-                </button>
+                <div className="pt-4 flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => {
+                        setSelectedAvatar(av.id);
+                        showNotification(`Démarrage de la conversation avec ${av.name}...`);
+                        setActiveView('conversation');
+                      }}
+                      className="flex-1 py-2 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-colors flex items-center justify-center gap-1.5 shadow-sm cursor-pointer"
+                    >
+                      <Mic className="w-3.5 h-3.5" />
+                      <span>Discuter</span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        setSelectedAvatar(av.id);
+                        showNotification(`Accès aux cours avec ${av.name}...`);
+                        setActiveView('learning-path');
+                      }}
+                      className="py-2 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold transition-colors flex items-center justify-center gap-1 cursor-pointer"
+                      title="Démarrer les cours avec ce formateur"
+                    >
+                      <BookOpen className="w-3.5 h-3.5 text-indigo-500" />
+                      <span>Cours</span>
+                    </button>
+                  </div>
+                  <button
+                    onClick={handleStartFreeTrialTest}
+                    className="w-full py-1.5 px-3 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 text-[11px] font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                    title="Tester mon niveau avant de démarrer"
+                  >
+                    <Award className="w-3 h-3 text-amber-500" />
+                    <span>Test préalable gratuit</span>
+                  </button>
+                </div>
               </div>
             </div>
           ))}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useApp, AppView } from '../context/AppContext';
 import { getTranslation } from '../translations';
 import { INTERFACE_LANGUAGES, SUPPORTED_LEARNING_LANGUAGES, getLanguageInfo } from '../data/languages';
+import { LinGoLLogo } from './LinGoLLogo';
 import {
   Flame,
   Zap,
@@ -50,24 +51,20 @@ export const Navbar: React.FC = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 flex items-center justify-between gap-6">
+    <header className="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-slate-800/80 bg-white/90 dark:bg-[#0f1523]/95 backdrop-blur-md transition-colors shadow-xs dark:shadow-none">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3 flex items-center justify-between gap-6">
         {/* Logo & Navigation links */}
         <div className="flex items-center gap-8">
           <button
             onClick={() => setActiveView('dashboard')}
             className="flex items-center gap-2.5 text-left focus:outline-none group cursor-pointer"
+            title="LinGoL Learner — Accueil"
           >
-            <div className="w-8 h-8 rounded-xl overflow-hidden shadow-sm flex items-center justify-center group-hover:scale-105 transition-transform shrink-0">
-              <img src="/favicon.svg" alt="LinGoL Logo" className="w-full h-full object-cover" />
-            </div>
-            <span className="text-2xl font-black tracking-tighter text-indigo-600 dark:text-indigo-400">
-              LinGoL
-            </span>
+            <LinGoLLogo size="md" />
           </button>
 
           {/* Desktop Navigation with Artistic Flair border-b indicator */}
-          <nav className="hidden md:flex items-center gap-6 text-sm font-semibold text-slate-500 dark:text-slate-400">
+          <nav className="hidden md:flex items-center gap-6 text-sm font-semibold text-slate-600 dark:text-slate-400">
             {navItems.map((item) => {
               const isActive = activeView === item.id;
               return (
@@ -148,13 +145,24 @@ export const Navbar: React.FC = () => {
             )}
           </div>
 
-          {/* Dark Mode Toggle */}
+          {/* Dark / Light Mode Switcher (Mode Blanc & Nuit) */}
           <button
             onClick={toggleDarkMode}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors cursor-pointer"
-            title="Toggle theme"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border border-slate-200 dark:border-slate-700/80 bg-slate-100/80 dark:bg-slate-800/90 text-slate-700 dark:text-slate-200 hover:bg-slate-200/80 dark:hover:bg-slate-700 transition-all cursor-pointer text-xs font-semibold shadow-2xs"
+            title={isDarkMode ? 'Basculer vers le mode blanc (jour)' : 'Basculer vers le mode nuit mate foncé'}
+            aria-label={isDarkMode ? 'Passer au mode blanc' : 'Passer au mode nuit'}
           >
-            {isDarkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
+            {isDarkMode ? (
+              <>
+                <Sun className="w-3.5 h-3.5 text-amber-400" />
+                <span className="hidden sm:inline text-[11px] text-slate-300">Nuit</span>
+              </>
+            ) : (
+              <>
+                <Moon className="w-3.5 h-3.5 text-slate-700" />
+                <span className="hidden sm:inline text-[11px] text-slate-700">Blanc</span>
+              </>
+            )}
           </button>
 
           {/* If NOT authenticated: show Login & Registration CTA */}

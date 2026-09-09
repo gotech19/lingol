@@ -14,10 +14,12 @@ import {
   Mic,
   MessageSquare,
   ShieldCheck,
+  BookOpen,
+  ArrowRight,
 } from 'lucide-react';
 
 export const MyCharacterView: React.FC = () => {
-  const { user, avatar, setSelectedAvatar, updateUser, showNotification } = useApp();
+  const { user, avatar, setSelectedAvatar, updateUser, setActiveView, showNotification } = useApp();
   const t = getTranslation(user.interfaceLanguage);
 
   const [strictness, setStrictness] = useState<'gentle' | 'balanced' | 'strict'>('balanced');
@@ -77,6 +79,32 @@ export const MyCharacterView: React.FC = () => {
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
                 {avatar.bio}
               </p>
+            </div>
+
+            {/* Primary Action Buttons: Start Conversation & Start Lessons */}
+            <div className="pt-2 space-y-2">
+              <button
+                onClick={() => {
+                  showNotification(`Démarrage de la conversation avec ${avatar.name}...`);
+                  setActiveView('conversation');
+                }}
+                className="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-all shadow-md shadow-indigo-500/20 flex items-center justify-center gap-2 cursor-pointer group"
+              >
+                <MessageSquare className="w-4 h-4 text-indigo-200 group-hover:scale-110 transition-transform" />
+                <span>Démarrer la conversation avec {avatar.name}</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+
+              <button
+                onClick={() => {
+                  showNotification(`Ouverture du parcours de cours guidé par ${avatar.name}...`);
+                  setActiveView('learning-path');
+                }}
+                className="w-full py-2.5 px-4 rounded-xl bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold transition-colors flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <BookOpen className="w-4 h-4 text-indigo-500" />
+                <span>Démarrer les cours avec {avatar.name}</span>
+              </button>
             </div>
 
             {/* Test Voice Audio button */}
@@ -223,30 +251,64 @@ export const MyCharacterView: React.FC = () => {
                 return (
                   <div
                     key={av.id}
-                    onClick={() => {
-                      setSelectedAvatar(av.id);
-                      showNotification(`Switched partner to ${av.name}!`);
-                    }}
-                    className={`p-3 rounded-2xl border cursor-pointer transition-all flex items-center gap-3 ${
+                    className={`p-3.5 rounded-2xl border transition-all flex flex-col justify-between gap-3 ${
                       isSelected
                         ? 'border-indigo-600 bg-indigo-50/60 dark:bg-indigo-950/40 ring-2 ring-indigo-500/20'
                         : 'border-slate-200 dark:border-slate-800 hover:border-slate-300'
                     }`}
                   >
-                    <img
-                      src={av.avatarUrl}
-                      alt={av.name}
-                      className="w-12 h-12 rounded-xl object-cover shrink-0"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <div className="font-bold text-xs text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
-                        <span className="truncate">{av.name}</span>
-                        {isSelected && <Check className="w-3.5 h-3.5 text-indigo-600 shrink-0" />}
+                    <div
+                      onClick={() => {
+                        setSelectedAvatar(av.id);
+                        showNotification(`Partenaire actif changé pour ${av.name} !`);
+                      }}
+                      className="flex items-center gap-3 cursor-pointer"
+                    >
+                      <img
+                        src={av.avatarUrl}
+                        alt={av.name}
+                        className="w-12 h-12 rounded-xl object-cover shrink-0"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <div className="font-bold text-xs text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
+                          <span className="truncate">{av.name}</span>
+                          {isSelected && <Check className="w-3.5 h-3.5 text-indigo-600 shrink-0" />}
+                        </div>
+                        <div className="text-[11px] text-indigo-600 dark:text-indigo-400 font-medium truncate">
+                          {av.role}
+                        </div>
+                        <div className="text-[10px] text-slate-400 truncate">{av.personality}</div>
                       </div>
-                      <div className="text-[11px] text-indigo-600 dark:text-indigo-400 font-medium truncate">
-                        {av.role}
-                      </div>
-                      <div className="text-[10px] text-slate-400 truncate">{av.personality}</div>
+                    </div>
+
+                    <div className="flex items-center gap-2 pt-1 border-t border-slate-100 dark:border-slate-800/80">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedAvatar(av.id);
+                          showNotification(`Démarrage de la conversation avec ${av.name}...`);
+                          setActiveView('conversation');
+                        }}
+                        className="flex-1 py-1.5 px-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-bold transition-colors flex items-center justify-center gap-1 cursor-pointer"
+                      >
+                        <MessageSquare className="w-3 h-3" />
+                        <span>Discuter</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedAvatar(av.id);
+                          showNotification(`Accès aux cours avec ${av.name}...`);
+                          setActiveView('learning-path');
+                        }}
+                        className="py-1.5 px-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-[11px] font-bold transition-colors flex items-center justify-center gap-1 cursor-pointer"
+                        title="Ouvrir les cours avec ce professeur"
+                      >
+                        <BookOpen className="w-3 h-3 text-indigo-500" />
+                        <span>Cours</span>
+                      </button>
                     </div>
                   </div>
                 );

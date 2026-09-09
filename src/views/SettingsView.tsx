@@ -23,7 +23,8 @@ export const SettingsView: React.FC = () => {
     updateUser,
     setInterfaceLanguage,
     setLearningLanguage,
-    toggleTheme,
+    isDarkMode,
+    toggleDarkMode,
     showNotification,
   } = useApp();
 
@@ -154,30 +155,34 @@ export const SettingsView: React.FC = () => {
 
             <div className="space-y-2">
               <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                Appearance Mode
+                Mode d'affichage (Blanc ou Nuit)
               </label>
               <div className="flex gap-2">
                 <button
-                  onClick={toggleTheme}
-                  className={`flex-1 py-3 px-4 rounded-2xl border text-xs font-semibold flex items-center justify-center gap-2 transition-colors ${
-                    user.theme === 'light'
-                      ? 'border-indigo-600 bg-indigo-50/70 dark:bg-indigo-950/50 text-indigo-600'
-                      : 'border-slate-200 dark:border-slate-800 hover:bg-slate-50'
+                  onClick={() => {
+                    if (isDarkMode) toggleDarkMode();
+                  }}
+                  className={`flex-1 py-3 px-4 rounded-2xl border text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                    !isDarkMode
+                      ? 'border-indigo-600 bg-indigo-50/80 text-indigo-700 shadow-sm font-bold'
+                      : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
                 >
-                  <Sun className="w-4 h-4" />
-                  <span>Light Theme</span>
+                  <Sun className="w-4 h-4 text-amber-500" />
+                  <span>Mode Blanc</span>
                 </button>
                 <button
-                  onClick={toggleTheme}
-                  className={`flex-1 py-3 px-4 rounded-2xl border text-xs font-semibold flex items-center justify-center gap-2 transition-colors ${
-                    user.theme === 'dark'
-                      ? 'border-indigo-600 bg-indigo-50/70 dark:bg-indigo-950/50 text-indigo-600'
-                      : 'border-slate-200 dark:border-slate-800 hover:bg-slate-50'
+                  onClick={() => {
+                    if (!isDarkMode) toggleDarkMode();
+                  }}
+                  className={`flex-1 py-3 px-4 rounded-2xl border text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                    isDarkMode
+                      ? 'border-indigo-500 bg-indigo-950/60 text-indigo-300 shadow-sm font-bold'
+                      : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
                 >
-                  <Moon className="w-4 h-4" />
-                  <span>Dark Theme</span>
+                  <Moon className="w-4 h-4 text-indigo-400" />
+                  <span>Mode Nuit (Mat)</span>
                 </button>
               </div>
             </div>

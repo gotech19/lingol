@@ -128,9 +128,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [activeScenario, setActiveScenario] = useState<string>('Casual conversation in a cafe');
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('lingol_theme') === 'dark';
+      const saved = localStorage.getItem('lingol_theme');
+      if (saved) return saved === 'dark';
+      return true; // Défaut: mode sombre mat et profond
     }
-    return false;
+    return true;
   });
 
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);

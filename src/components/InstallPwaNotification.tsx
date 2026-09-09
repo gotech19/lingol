@@ -109,7 +109,7 @@ export const InstallPwaNotification: React.FC = () => {
 
   return (
     <div className="fixed top-20 right-4 sm:right-6 z-50 max-w-sm w-[calc(100vw-2rem)] sm:w-96 animate-in slide-in-from-top-4 fade-in duration-300">
-      <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-indigo-200 dark:border-indigo-800 shadow-2xl shadow-indigo-500/20 backdrop-blur-xl relative">
+      <div className="p-4 rounded-2xl bg-white dark:bg-[#131b2e] border border-slate-200 dark:border-slate-700/80 shadow-2xl shadow-black/20 dark:shadow-black/60 backdrop-blur-xl relative">
         <button
           onClick={handleDismiss}
           className="absolute top-3 right-3 p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
@@ -119,45 +119,45 @@ export const InstallPwaNotification: React.FC = () => {
         </button>
 
         <div className="flex items-start gap-3.5">
-          <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-indigo-600 to-blue-600 p-0.5 shadow-md flex items-center justify-center shrink-0">
+          <div className="w-11 h-11 rounded-xl bg-slate-900 border border-slate-700 p-0.5 shadow-md flex items-center justify-center shrink-0">
             <img src="/favicon.svg" alt="LinGoL" className="w-full h-full rounded-[10px]" />
           </div>
 
           <div className="space-y-1 pr-4">
             <div className="flex items-center gap-1.5">
               <span className="text-xs font-black tracking-tight text-indigo-600 dark:text-indigo-400">
-                Application LinGoL
+                LinGoL Learner
               </span>
-              <span className="px-1.5 py-0.2 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 text-[10px] font-bold">
+              <span className="px-1.5 py-0.2 rounded-full bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-200 dark:border-emerald-800/60 text-emerald-700 dark:text-emerald-300 text-[10px] font-bold">
                 Gratuit
               </span>
             </div>
             <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100 leading-tight">
               Installez LinGoL sur votre appareil
             </h4>
-            <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+            <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
               Accédez plus rapidement à vos cours, leçons vocales et coachs IA directement depuis votre écran d'accueil.
             </p>
           </div>
         </div>
 
         {showIosInstructions ? (
-          <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-600 dark:text-slate-300 space-y-1.5">
-            <p className="font-semibold text-slate-900 dark:text-slate-100">Sur iPhone / iPad :</p>
-            <p>1. Appuyez sur le bouton <strong>Partager</strong> <span className="text-indigo-500 font-bold">(carré avec flèche vers le haut)</span> en bas de Safari.</p>
+          <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-700 dark:text-slate-300 space-y-1.5">
+            <p className="font-semibold text-slate-100">Sur iPhone / iPad :</p>
+            <p>1. Appuyez sur le bouton <strong>Partager</strong> <span className="text-indigo-400 font-bold">(carré avec flèche vers le haut)</span> en bas de Safari.</p>
             <p>2. Faites défiler et choisissez <strong>« Sur l'écran d'accueil »</strong>.</p>
           </div>
         ) : (
-          <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-end gap-2">
+          <div className="mt-3 pt-3 border-t border-slate-800 flex items-center justify-end gap-2">
             <button
               onClick={handleDismiss}
-              className="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              className="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/80 transition-colors"
             >
               Plus tard
             </button>
             <button
               onClick={handleInstallClick}
-              className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white text-xs font-bold shadow-md shadow-indigo-500/25 flex items-center gap-1.5 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
+              className="px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-md shadow-indigo-900/30 flex items-center gap-1.5 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
             >
               <Download className="w-3.5 h-3.5" />
               <span>Installer l'application</span>
