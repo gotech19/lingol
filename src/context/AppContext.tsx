@@ -132,7 +132,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('lingol_theme');
       if (saved) return saved === 'dark';
-      return true; // Défaut: mode sombre mat et profond
+      // System auto-detection
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return true;
+      }
     }
     return true;
   });

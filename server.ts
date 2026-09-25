@@ -8,7 +8,47 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
-app.use(express.json({ limit: '10mb' }));
+app.use(express.json({ limit: '2mb' }));
+
+// Security HTTP Response Headers Middleware
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'microphone=(self), camera=()');
+  next();
+});
+
+// Simple In-Memory IP Rate Limiter Middleware
+const rateLimitWindowMs = 60 * 1000; // 1 minute
+const maxRequestsPerWindow = 60; // Max 60 requests/min per IP
+const ipRequestCounts: Record<string, { count: number; windowReset: number }> = {};
+
+function rateLimiter(req: express.Request, res: express.Response, next: express.NextFunction) {
+  const clientIp = (req.headers['x-forwarded-for'] as string) || req.socket.remoteAddress || 'unknown-ip';
+  const now = Date.now();
+
+  if (!ipRequestCounts[clientIp] || now > ipRequestCounts[clientIp].windowReset) {
+    ipRequestCounts[clientIp] = {
+      count: 1,
+      windowReset: now + rateLimitWindowMs,
+    };
+    return next();
+  }
+
+  ipRequestCounts[clientIp].count += 1;
+  if (ipRequestCounts[clientIp].count > maxRequestsPerWindow) {
+    return res.status(429).json({
+      error: 'Too Many Requests',
+      message: 'Rate limit exceeded. Please try again in a minute.',
+    });
+  }
+
+  next();
+}
+
+app.use('/api/', rateLimiter);
 
 // Lazy-initialized Gemini client
 let aiClient: GoogleGenAI | null = null;
