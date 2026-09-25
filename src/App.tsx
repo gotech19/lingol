@@ -6,6 +6,7 @@ import { UpgradeModal } from './components/UpgradeModal';
 import { AuthModal } from './components/AuthModal';
 import { MicPermissionModal } from './components/MicPermissionModal';
 import { InstallPwaNotification } from './components/InstallPwaNotification';
+import { PromoVideoModal } from './components/PromoVideoModal';
 
 // Views
 import { LandingView } from './views/LandingView';
@@ -32,6 +33,10 @@ const MainContent: React.FC = () => {
     setIsAuthModalOpen,
     isMicModalOpen,
     setIsMicModalOpen,
+    isPromoVideoOpen,
+    setIsPromoVideoOpen,
+    setActiveView,
+    updateUser,
   } = useApp();
 
   return (
@@ -82,6 +87,12 @@ const MainContent: React.FC = () => {
       <MicPermissionModal
         isOpen={isMicModalOpen}
         onClose={() => setIsMicModalOpen(false)}
+      />
+      <PromoVideoModal
+        isOpen={isPromoVideoOpen}
+        onClose={() => setIsPromoVideoOpen(false)}
+        onStartTest={() => setActiveView('onboarding')}
+        onStartTrial={() => setActiveView('onboarding')}
       />
     </div>
   );
