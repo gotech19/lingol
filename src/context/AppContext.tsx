@@ -52,6 +52,8 @@ interface AppContextType {
   setIsAuthModalOpen: (open: boolean) => void;
   isMicModalOpen: boolean;
   setIsMicModalOpen: (open: boolean) => void;
+  isPromoVideoOpen: boolean;
+  setIsPromoVideoOpen: (open: boolean) => void;
   notificationMessage: string | null;
   notification?: string | null;
   showNotification: (msg: string) => void;
@@ -138,6 +140,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isMicModalOpen, setIsMicModalOpen] = useState(false);
+  const [isPromoVideoOpen, setIsPromoVideoOpen] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState<string | null>(null);
 
   // Apply dark mode class and RTL direction
@@ -357,6 +360,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setIsAuthModalOpen,
         isMicModalOpen,
         setIsMicModalOpen,
+        isPromoVideoOpen,
+        setIsPromoVideoOpen,
         notificationMessage,
         notification: notificationMessage,
         showNotification,

@@ -32,6 +32,7 @@ export const Navbar: React.FC = () => {
     setIsAuthModalOpen,
     setInterfaceLanguage,
     setLearningLanguage,
+    setIsPromoVideoOpen,
     logout,
   } = useApp();
 
@@ -86,6 +87,15 @@ export const Navbar: React.FC = () => {
 
         {/* User Stats, Language & Controls */}
         <div className="flex items-center gap-3 sm:gap-5">
+          {/* Promo Video CTA button in navbar */}
+          <button
+            onClick={() => setIsPromoVideoOpen(true)}
+            className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-xs font-bold shadow-sm transition-all hover:scale-105 cursor-pointer"
+            title="Visionner la vidéo de présentation interactif LinGoL"
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Vidéo Pub / Démo</span>
+          </button>
           {/* Target language flag selector */}
           <div className="relative">
             <button

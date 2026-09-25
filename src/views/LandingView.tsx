@@ -32,7 +32,7 @@ import {
 } from 'lucide-react';
 
 export const LandingView: React.FC = () => {
-  const { user, updateUser, setActiveView, setSelectedAvatar, setIsAuthModalOpen, showNotification } = useApp();
+  const { user, updateUser, setActiveView, setSelectedAvatar, setIsAuthModalOpen, setIsPromoVideoOpen, showNotification } = useApp();
   const t = getTranslation(user.interfaceLanguage);
 
   const [selectedLang, setSelectedLang] = useState<LearningLanguage>(user.learningLanguage || 'en');
@@ -95,9 +95,19 @@ export const LandingView: React.FC = () => {
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-gradient-to-tr from-indigo-500/20 via-blue-500/20 to-cyan-400/20 blur-3xl -z-10 pointer-events-none rounded-full" />
 
         <div className="text-center max-w-3xl mx-auto space-y-6">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 dark:bg-indigo-500/20 border border-indigo-500/20 text-indigo-700 dark:text-indigo-300 text-xs font-semibold shadow-sm">
-            <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
-            <span>Bienvenue sur LinGoL Learner — Apprentissage Vocal Par l'IA</span>
+          <div className="inline-flex flex-wrap items-center justify-center gap-2">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 dark:bg-indigo-500/20 border border-indigo-500/20 text-indigo-700 dark:text-indigo-300 text-xs font-semibold shadow-sm">
+              <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
+              <span>Bienvenue sur LinGoL Learner — Apprentissage Vocal Par l'IA</span>
+            </div>
+
+            <button
+              onClick={() => setIsPromoVideoOpen(true)}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white text-xs font-bold shadow-md hover:shadow-indigo-500/20 transition-all hover:scale-105 cursor-pointer"
+            >
+              <Play className="w-3.5 h-3.5 fill-current text-amber-300" />
+              <span>Voir la Vidéo de Présentation (Pub Démo)</span>
+            </button>
           </div>
 
           <h1 className="text-4xl sm:text-6xl font-extrabold text-slate-900 dark:text-slate-50 tracking-tight leading-[1.15]">
@@ -653,6 +663,89 @@ export const LandingView: React.FC = () => {
         </div>
       </section>
 
+      {/* SPÉCIFICITÉS & DÉMO VIDÉO INTERACTIVE */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="rounded-3xl bg-gradient-to-br from-indigo-950 via-slate-900 to-purple-950 text-white p-8 sm:p-12 border border-indigo-500/30 relative overflow-hidden shadow-2xl space-y-8">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 border-b border-indigo-500/20 pb-6">
+            <div className="space-y-2 max-w-2xl">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs font-bold border border-purple-500/30">
+                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                <span>Vidéo Pub & Spécificités Phares</span>
+              </div>
+              <h3 className="text-2xl sm:text-4xl font-extrabold tracking-tight">
+                Découvrez LinGoL Learner en Action
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Visionnez notre bande-annonce vidéo animée avec voix de synthèse et sous-titres, illustrant la synthèse vocale Gemini, l'analyse phonétique acoustique et le test de niveau CECR.
+              </p>
+            </div>
+
+            <button
+              onClick={() => setIsPromoVideoOpen(true)}
+              className="py-4 px-6 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-slate-950 font-black text-sm shadow-xl shadow-amber-500/20 flex items-center justify-center gap-2.5 hover:scale-105 transition-all cursor-pointer shrink-0"
+            >
+              <Play className="w-5 h-5 fill-current" />
+              <span>Lancer la Vidéo Démo (30s)</span>
+            </button>
+          </div>
+
+          {/* Grid of specific highlights featured in the video */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div
+              onClick={() => setIsPromoVideoOpen(true)}
+              className="p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-indigo-400/50 hover:bg-white/10 transition-all cursor-pointer group"
+            >
+              <div className="w-9 h-9 rounded-xl bg-indigo-500/20 text-indigo-300 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                <Zap className="w-5 h-5 text-amber-300" />
+              </div>
+              <h4 className="font-bold text-sm text-white mb-1">1. Moteur IA Gemini</h4>
+              <p className="text-[11px] text-slate-300 leading-relaxed">
+                Génération de dialogues naturels et adaptatifs en temps réel.
+              </p>
+            </div>
+
+            <div
+              onClick={() => setIsPromoVideoOpen(true)}
+              className="p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-indigo-400/50 hover:bg-white/10 transition-all cursor-pointer group"
+            >
+              <div className="w-9 h-9 rounded-xl bg-blue-500/20 text-blue-300 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                <Mic className="w-5 h-5 text-emerald-400" />
+              </div>
+              <h4 className="font-bold text-sm text-white mb-1">2. Coach Prononciation</h4>
+              <p className="text-[11px] text-slate-300 leading-relaxed">
+                Analyse phonétique des syllabes et notation de fluidité.
+              </p>
+            </div>
+
+            <div
+              onClick={() => setIsPromoVideoOpen(true)}
+              className="p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-indigo-400/50 hover:bg-white/10 transition-all cursor-pointer group"
+            >
+              <div className="w-9 h-9 rounded-xl bg-purple-500/20 text-purple-300 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                <Award className="w-5 h-5 text-purple-300" />
+              </div>
+              <h4 className="font-bold text-sm text-white mb-1">3. Test CECR A1-C2</h4>
+              <p className="text-[11px] text-slate-300 leading-relaxed">
+                Évaluation diagnostique immédiate dès le premier accès.
+              </p>
+            </div>
+
+            <div
+              onClick={() => setIsPromoVideoOpen(true)}
+              className="p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-indigo-400/50 hover:bg-white/10 transition-all cursor-pointer group"
+            >
+              <div className="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+              </div>
+              <h4 className="font-bold text-sm text-white mb-1">4. PWA & Hors-Ligne</h4>
+              <p className="text-[11px] text-slate-300 leading-relaxed">
+                Application installable sur mobile sans téléchargement Store.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* PRONUNCIATION & VOICE SHOWCASE */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="rounded-3xl bg-gradient-to-br from-indigo-900 via-slate-900 to-slate-950 text-white p-8 sm:p-12 relative overflow-hidden">
@@ -671,7 +764,7 @@ export const LandingView: React.FC = () => {
               <div className="pt-2 flex flex-wrap gap-3">
                 <button
                   onClick={() => setActiveView('pronunciation-coach')}
-                  className="py-3 px-6 rounded-xl bg-white text-slate-950 font-bold text-xs hover:bg-slate-100 transition-colors flex items-center gap-2"
+                  className="py-3 px-6 rounded-xl bg-white text-slate-950 font-bold text-xs hover:bg-slate-100 transition-colors flex items-center gap-2 cursor-pointer"
                 >
                   <Mic className="w-4 h-4 text-indigo-600" />
                   <span>Try Pronunciation Coach</span>
